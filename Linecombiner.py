@@ -1,9 +1,7 @@
 # a line is represented by a (m,b) tuple for the form y=mx+b
+Line = tuple[float, float]
 
-from msilib.schema import Error
-
-
-def combine(lines):
+def combine(lines: list[Line]) -> list[Line]:
     # start by sorting the lines
     lines.sort()
     # remove duplicate slopes, keeping the one with a larger y-intercept. 
@@ -18,12 +16,13 @@ def combine(lines):
     return merge(lines)
 
 # returns the x of where two lines intersect
-intersect = lambda a, b: (a[1]-b[1])/(b[0]-a[0])
+def intersect(a: Line, b: Line) -> float:
+    return (a[1]-b[1])/(b[0]-a[0])
 
-def calc(line, point):
+def calc(line: Line, point: float) -> float:
     return line[0]*point+line[1]
 
-def merge(lines):
+def merge(lines: list[Line]) -> list[Line]:
     if len(lines) == 1: # base case
         return lines
     #print('Merging', lines)
@@ -54,7 +53,7 @@ def merge(lines):
         # guards against len(half2)==1 because the largest slope will always be kept
         # as before, this checks if the intersection point of the lines 'before' and 'after'
         # a line
-        # if h2[0](intersect) <= h1[-1](intersect) <=> h2[0] <= h2[1](intersect) then
+        # if h2[0](intersect) <= h1[-1](intersect) <=> h2[0] <= h2[1](intersect) then equivalently
         # h2[0] <= max(h1[-1],h2[1]) for all x, so get rid of h2[0]
         while len(half2) > 1 and \
             calc(half1[-1], intersect(half1[-1], half2[1])) >= \
@@ -67,7 +66,7 @@ def merge(lines):
     return half1 + half2
 
 # each is a tuple. index 0 is the test, index 1 is the expected result
-tests = [
+tests: list[tuple[list[Line],list[Line]]] = [
     (
         [(0,0),(0,1)],
         [(0,1)]
