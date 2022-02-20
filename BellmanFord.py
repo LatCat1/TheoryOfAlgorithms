@@ -1,7 +1,6 @@
 from ast import Num
 
-
-Graph = dict[str, dict[str,int]]
+Graph = dict[str, dict[str,Num]]
 
 m: Graph = {
     's': {'a':6,'d':3,'g':3},
@@ -24,15 +23,19 @@ def display(iter, dists):
     return out[:-2]
 
 def bellman_ford(source: str, graph: Graph, disp: bool = False, 
-    default_max: Num = 10000) -> dict[str, int]:
+    default_max: Num = 10000) -> dict[str, Num]:
     
     dist = {source: 0}
     view = []
     for k in range(1,len(graph)):
+        copy = {}
         temp_look = [d for d in dist.keys()]
         for u in temp_look:
             for v in graph[u]:
-                dist[v] = min(dist.get(v,default_max),  dist.get(u,default_max) + graph[u][v])
+                copy[v] = min(dist.get(v,default_max),  dist.get(u,default_max) + graph[u][v])
+        for i in copy:
+            dist[i] = copy[i]
+
         if disp: view.append(display(k, dist))
 
     if disp:
