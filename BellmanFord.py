@@ -42,7 +42,7 @@ def bellman_ford(source: str, graph: Graph, disp: bool = False,
         while view[-1] == view[-2]:
             view.pop()
         for i in range(len(view)):
-            print(f'For walks from $s$ of at most $k={i+1}$ edges: {view[i]}')
+            print(f'For walks from $s$ of at most $k={i+1}$ edges: {view[i]}\\\\')
 
     return dist
 
